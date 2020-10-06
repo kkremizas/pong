@@ -1,6 +1,7 @@
 import { Vector } from "./vector";
 import { GameObject } from "./gameObject";
 import { GameEngine } from "./index";
+import { Player } from "./player";
 
 export class Ball implements GameObject
 {
@@ -10,7 +11,7 @@ export class Ball implements GameObject
     public position:Vector;
     private direction:Vector;
     private speed:number = 60;
-    private size:number= 10;
+    private size:number= 30;
 
     constructor (position:Vector, gameEngine:GameEngine)
     {
@@ -30,21 +31,23 @@ export class Ball implements GameObject
            this.direction.y *= -1;
 
                
-        this.position.x += this.direction.x * this.speed * time/1000;
-        this.position.y += this.direction.y * this.speed * time/1000;
+        this.position.x += this.direction.x * this.speed * time/200;
+        this.position.y += this.direction.y * this.speed * time/200;
     }
     
     // draw ball on canvas
     draw(ctx: CanvasRenderingContext2D): void {
         ctx.fillRect(this.position.x, this.position.y, this.size, this.size);
     }
-    
+    counter=0;
     // in case of any collision this method is called
     onColliosion(other: GameObject): void {
         // reverse direction if player collides with ball
         if (other == this.gameEngine.player1)
         {
             this.direction.x *= -1;
+            this.counter++;
+            console.log(this.counter);
         }
     }
 
